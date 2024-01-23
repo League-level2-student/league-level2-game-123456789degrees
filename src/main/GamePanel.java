@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Font titleFont;
 	Font regFont;
 	Timer frameDraw;
+	Human gamer = new Human(350, 800, 50,100); 
 	public GamePanel() {
 	    titleFont = new Font("Arial", Font.BOLD, 48);
 	    regFont = new Font("Arial", Font.PLAIN, 30);
@@ -59,8 +60,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.drawString("PRESS SPACE FOR INSTRUCTIONS", 100, 540);
 	}
 	public void drawGameState(Graphics g) { 
-		g.setColor(Color.BLUE);
+		g.setColor(Color.CYAN);
 		g.fillRect(0, 0, RainingTacos.WIDTH, RainingTacos.HEIGHT);
+		gamer.draw(g);
 	}
 	public void drawEndState(Graphics g)  {
 		g.setColor(Color.RED);
@@ -89,17 +91,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		    }
 		}
 		if (currentState == GAME) {
-			if (e.getKeyCode()==KeyEvent.VK_UP) {
-			    System.out.println("UP");
-			}
-			if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-			    System.out.println("DOWN");
-			}
 			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			    System.out.println("RIGHT");
+			   	if (gamer.x < 640) {
+			   		gamer.right();
+			   	}
 			}
 			if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-			    System.out.println("LEFT");
+			    if (gamer.x > 10) {
+			    	gamer.left();
+			    }
 			}
 		}
 	}
