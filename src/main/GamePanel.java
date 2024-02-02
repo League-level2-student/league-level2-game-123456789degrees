@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	final int GAME = 1;
 	final int END = 2;
 	int currentState = MENU;
+	int currentState2 = 0;
 	Font titleFont;
 	Font regFont;
 	Timer frameDraw;
@@ -45,6 +46,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void paintComponent(Graphics g){
 		if(currentState == MENU){
 		    drawMenuState(g);
+		    if (currentState2 == 1) {
+		    	drawDirections(g);
+		    }
 		}
 		else if(currentState == GAME){
 		    drawGameState(g);
@@ -58,6 +62,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	}
 	public void updateGameState() { 
 		manager.update();
+		if (!gamer.isActive) {
+			currentState = END;
+		}
 	}
 	public void updateEndState()  { 
 		
@@ -79,6 +86,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			g.setColor(Color.BLUE);
 			g.fillRect(0, 0, RainingTacos.WIDTH, RainingTacos.HEIGHT);
 		}
+		g.setColor(Color.RED);
+		g.setFont(regFont);
+		g.drawString("Score: " + manager.getScore(), 25, 25);
 		manager.draw(g);
 	}
 	public void drawEndState(Graphics g)  {
@@ -88,8 +98,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		g.setColor(Color.GREEN);
 		g.drawString("GAME OVER", 175, 100);
 		g.setFont(regFont);
-		g.drawString("You ate " + score + " tacos.", 215, 360);
+		g.drawString("You ate " + manager.getScore() + " tacos.", 215, 360);
 		g.drawString("PRESS ENTER TO RESTART", 140, 540);
+	}
+	public void drawDirections(Graphics g) {
+		g.setColor(Color.ORANGE);
+		g.fillRect(0, 0, RainingTacos.WIDTH, RainingTacos.HEIGHT);
+		g.setFont(regFont);
+		g.setColor(Color.BLUE);
+		g.drawString("Use arrow keys to move right and left.", 100, 300);
+		g.drawString("Try to eat as many tacos as you can. ", 115, 330);
+		g.drawString("Don't get hit by the rocks!", 180, 360);
+		g.drawString("Press SPACE to go back. ", 180, 400);
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -102,15 +122,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
+		    	gamer = new Human(350, 800, 50,100);
+		    	manager = new ObjectManager(gamer);
 		        currentState = MENU;
 		    }
 		    else if (currentState == MENU) {
+		    	currentState = GAME;
 		    	startGame();
 		    }
 		    else {
 		    	alienSpawn.stop();
 		        currentState++;
 		    }
+		}
+		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+			currentState2++;
+			if (currentState2 > 1) {
+				currentState2 = 0;
+			}
 		}
 		if (currentState == GAME) {
 			if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
@@ -142,7 +171,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		}else if(currentState == END){
 		    updateEndState();
 		}
-		System.out.println("action");
 		repaint();
 	}
 	void loadImage(String imageFile) {

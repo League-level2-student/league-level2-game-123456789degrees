@@ -13,13 +13,14 @@ public class Rock extends GameObject{
 	public Rock(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		// TODO Auto-generated constructor stub
-		speed = 5;
+		speed = 7;
 		if (needImage) {
-		    loadImage ("rocket.png");
+		    loadImage ("rock.png");
 		}
 	}
 	public void update() {
 		y+=speed;
+		super.update();
 	}
 	public void draw(Graphics g) {
 		if (gotImage) {

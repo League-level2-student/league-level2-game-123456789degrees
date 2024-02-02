@@ -15,11 +15,12 @@ public class Taco extends GameObject{
 		// TODO Auto-generated constructor stub
 		speed = 5;
 		if (needImage) {
-		    loadImage ("taco.jpeg");
+		    loadImage ("taco.png");
 		}
 	}
 	public void update() {
 		y+=speed;
+		super.update();
 	}
 	public void draw(Graphics g) {
 		if (gotImage) {
