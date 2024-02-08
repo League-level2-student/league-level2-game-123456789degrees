@@ -1,13 +1,16 @@
 package main;
 import java.awt.Graphics;
+import java.applet.AudioClip;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JOptionPane;
 
-import game_tools.Sound;
 public class ObjectManager implements ActionListener{
 	Human h;
 	Random random = new Random();
@@ -74,15 +77,37 @@ public class ObjectManager implements ActionListener{
 				if (h.collisionBox.intersects(r.collisionBox)) {
 					h.isActive = false;
 					r.isActive = false;
+					playSound("rockhit.wav");
 				}
 			}
 			for (Taco t : tacos) {
 				if (h.collisionBox.intersects(t.collisionBox)) {
 					t.isActive = false;
 					score++;
+					playSound("chomp.wav");
 				}
 			}
 		}
+	}
+	private void playSound(String soundFile) {
+		String path = "src/main/";
+			File sound = new File(path+soundFile);
+			if (sound.exists()) {
+				new Thread(() -> {
+				try {
+					Clip clip = AudioSystem.getClip();
+					clip.open(AudioSystem.getAudioInputStream(sound));
+					clip.start();
+					Thread.sleep(clip.getMicrosecondLength()/1000);
+				}
+				catch (Exception e) {
+					System.out.println("Could not play this sound");
+				}}).start();
+	 		}
+			else {
+				System.out.println("File does not exist");
+			}
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
