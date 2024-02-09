@@ -30,7 +30,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static Timer alienSpawn;
 	public static Timer rockSpawn;
 	ObjectManager manager = new ObjectManager(gamer);
-	public GamePanel() {
+	public GamePanel() {Raining
 	    titleFont = new Font("Arial", Font.BOLD, 48);
 	    regFont = new Font("Arial", Font.PLAIN, 30);
 	    frameDraw = new Timer(1000/60, this);
