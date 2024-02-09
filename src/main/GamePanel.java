@@ -27,7 +27,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public static BufferedImage image;
 	public static boolean needImage = true;
 	public static boolean gotImage = false;	
-	Timer alienSpawn;
+	public static Timer alienSpawn;
+	public static Timer rockSpawn;
 	ObjectManager manager = new ObjectManager(gamer);
 	public GamePanel() {
 	    titleFont = new Font("Arial", Font.BOLD, 48);
@@ -41,6 +42,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void startGame() {
 		alienSpawn = new Timer(1000, manager);
 		alienSpawn.start();
+		rockSpawn = new Timer(500, manager);
+		rockSpawn.start();
 	}
 	@Override
 	public void paintComponent(Graphics g){
@@ -125,12 +128,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 		    	gamer = new Human(350, 800, 50,100);
 		    	manager = new ObjectManager(gamer);
 		        currentState = MENU;
+		        Rock.speed = 5;
 		    }
 		    else if (currentState == MENU) {
 		    	currentState = GAME;
 		    	startGame();
 		    }
 		    else {
+		    	rockSpawn.stop();
 		    	alienSpawn.stop();
 		        currentState++;
 		    }

@@ -84,6 +84,7 @@ public class ObjectManager implements ActionListener{
 				if (h.collisionBox.intersects(t.collisionBox)) {
 					t.isActive = false;
 					score++;
+					Rock.speed++;
 					playSound("chomp.wav");
 				}
 			}
@@ -112,7 +113,11 @@ public class ObjectManager implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		addTaco();
-		addRock();
+		if (e.getSource() == GamePanel.rockSpawn) {
+			addRock();
+		}
+		else {
+			addTaco();
+		}
 	}
 }
